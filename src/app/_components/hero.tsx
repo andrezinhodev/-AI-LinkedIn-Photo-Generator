@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { cn } from "@/lib/utils"
 
 // Array que contem minhas fotos
 const examplePhotos = [
@@ -28,11 +29,22 @@ export function Hero() {
         LinkedIn.
       </p>
 
-      <div className="mt-8 flex gap-3 justify-center items-center">
-        {examplePhotos.map((photo) => (
+      <div className="mt-8 flex gap-4 justify-center lg:justify-start items-center">
+        {/* index identifica a posição: 0, 1 (meio), 2 */}
+        {examplePhotos.map((photo, index) => (
           <div
             key={photo.src}
-            className="relative size-36 overflow-hidden rounded-2xl bg-muted lg:size-55"
+            className={cn(
+              "relative overflow-hidden rounded-2xl bg-muted",
+              // Foto do meio (masculino) um pouco maior; laterais no tamanho padrão
+              index === 1
+                ? "size-44 lg:size-64"
+                : "size-36 lg:size-55",
+
+              // Usando a logica de posicao dentro do array para rotacionar as fotos das laterais
+              index === 0 && "-rotate-2",
+              index === 2 && "rotate-2",
+            )}
           >
             <Image
               src={photo.src}

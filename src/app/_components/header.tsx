@@ -1,5 +1,6 @@
 import { Sparkles } from "lucide-react"
 import Link from "next/link"
+import {useState} from "react";
 
 const navLinks = [
   { label: "Como funciona", href: "#como-funciona" },
@@ -7,6 +8,25 @@ const navLinks = [
 ] as const
 
 export function Header() {
+  const [selectedPhoto, setSelectedPhoto] = useState< string | null >("")
+  const [generatedPhoto, setGeneratedPhoto] = useState<string | null>("")
+
+  // Criando a funcao que vai receber a photo tipo string
+  const handlePhotoSelected = (photo: string) => {
+    setSelectedPhoto(photo || null);
+  }
+
+  // Passando a foto via URL
+  const handleContinue = (url: string) => {
+    setGeneratedPhoto(url)
+  }
+
+  // Funcao para resetar
+  const handleStartOver = () => {
+    setSelectedPhoto(null);
+    setGeneratedPhoto(null);
+  }
+
   return (
     <header className="h-16 border-b border-border bg-background">
       <div className="container mx-auto flex h-full items-center justify-between px-4">
