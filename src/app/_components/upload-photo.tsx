@@ -99,7 +99,8 @@ export function UploadPhoto({ onFileChange }: UploadPhotoProps) {
         onDragLeave={() => setIsDragging(false)}
         onDrop={handleDrop}
         className={cn(
-          "relative flex min-h-[220px] w-full cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed transition-colors",
+          // Área de upload: altura menor no mobile, maior em telas sm+
+          "relative flex min-h-[180px] w-full cursor-pointer touch-manipulation flex-col items-center justify-center rounded-2xl border-2 border-dashed transition-colors sm:min-h-[220px]",
           isDragging
             ? "border-foreground/40 bg-muted/50"
             : "border-border bg-muted/20 hover:border-foreground/25 hover:bg-muted/40"
@@ -116,14 +117,15 @@ export function UploadPhoto({ onFileChange }: UploadPhotoProps) {
             <button
               type="button"
               onClick={handleClear}
-              className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-full bg-background/90 text-foreground shadow-sm transition-colors hover:bg-background"
+              // Botão de remover com área de toque ampliada no mobile (min 44px)
+              className="absolute top-2 right-2 flex size-10 items-center justify-center rounded-full bg-background/90 text-foreground shadow-sm transition-colors hover:bg-background sm:top-3 sm:right-3 sm:size-8"
               aria-label="Remover foto e escolher outra"
             >
               <X className="size-4" />
             </button>
           </>
         ) : (
-          <div className="flex flex-col items-center gap-3 px-6 py-8 text-center">
+          <div className="flex flex-col items-center gap-3 px-4 py-6 text-center sm:px-6 sm:py-8">
             <div className="flex size-12 items-center justify-center rounded-full bg-muted">
               <Upload className="size-5 text-muted-foreground" />
             </div>

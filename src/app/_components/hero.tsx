@@ -15,33 +15,36 @@ const examplePhotos = [
     src: "/foto3.png",
     alt: "Exemplo de retrato profissional feminino",
   },
-] 
+]
 
 export function Hero() {
   return (
-    <div className="flex w-full max-w-xl flex-col">
-      <h1 className="text-4xl font-bold leading-tight tracking-tight lg:text-5xl max-w-xl">
+    <div
+      id="exemplos"
+      className="flex w-full max-w-xl flex-col items-center text-center sm:items-start sm:text-left"
+    >
+      {/* Tipografia responsiva: menor no mobile, maior em telas largas */}
+      <h1 className="max-w-xl text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
         Fotos profissionais para o linkedin
       </h1>
-      <p className="mt-4 text-base leading-relaxed text-muted-foreground lg:text-lg max-w-xl ">
+      <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground sm:mt-4 sm:text-base lg:text-lg">
         Transforme qualquer foto sua em um retrato profissional de alta
         qualidade usando inteligência artificial. Perfeito para seu perfil do
         LinkedIn.
       </p>
 
-      <div className="mt-8 flex gap-4 justify-center lg:justify-start items-center">
-        {/* index identifica a posição: 0, 1 (meio), 2 */}
+      {/* Galeria contida na coluna esquerda — sem max-w-none em lg para não invadir o card */}
+      <div className="mt-6 flex w-full max-w-[min(100%,20rem)] items-center justify-center gap-2 sm:mt-8 sm:max-w-md sm:gap-3 sm:justify-center md:max-w-lg lg:max-w-xl lg:justify-start lg:gap-3 xl:max-w-2xl xl:gap-4">
         {examplePhotos.map((photo, index) => (
           <div
             key={photo.src}
             className={cn(
-              "relative overflow-hidden rounded-2xl bg-muted",
-              // Foto do meio (masculino) um pouco maior; laterais no tamanho padrão
+              "relative shrink-0 overflow-hidden rounded-2xl bg-muted",
+              // Tamanhos menores em lg; maiores só em xl quando há mais espaço
               index === 1
-                ? "size-44 lg:size-64"
-                : "size-36 lg:size-55",
-
-              // Usando a logica de posicao dentro do array para rotacionar as fotos das laterais
+                ? "size-28 sm:size-36 md:size-40 lg:size-48 xl:size-56"
+                : "size-24 sm:size-32 md:size-36 lg:size-40 xl:size-48",
+              // Rotação leve nas fotos laterais (preservada no mobile)
               index === 0 && "-rotate-2",
               index === 2 && "rotate-2",
             )}
@@ -50,8 +53,8 @@ export function Hero() {
               src={photo.src}
               alt={photo.alt}
               fill
+              sizes="(max-width: 640px) 112px, (max-width: 1024px) 176px, 256px"
               className="object-cover"
-
             />
           </div>
         ))}

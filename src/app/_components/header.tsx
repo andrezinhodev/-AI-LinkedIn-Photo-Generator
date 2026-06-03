@@ -1,6 +1,8 @@
-import { Sparkles } from "lucide-react"
+"use client"
+
+import { Menu, Sparkles, X } from "lucide-react"
 import Link from "next/link"
-import {useState} from "react";
+import { useState } from "react"
 
 const navLinks = [
   { label: "Como funciona", href: "#como-funciona" },
@@ -8,34 +10,30 @@ const navLinks = [
 ] as const
 
 export function Header() {
-  const [selectedPhoto, setSelectedPhoto] = useState< string | null >("")
-  const [generatedPhoto, setGeneratedPhoto] = useState<string | null>("")
+  // Estado do menu mobile: abre/fecha o painel de navegação em telas pequenas
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  // Criando a funcao que vai receber a photo tipo string
-  const handlePhotoSelected = (photo: string) => {
-    setSelectedPhoto(photo || null);
-  }
-
-  // Passando a foto via URL
-  const handleContinue = (url: string) => {
-    setGeneratedPhoto(url)
-  }
-
-  // Funcao para resetar
-  const handleStartOver = () => {
-    setSelectedPhoto(null);
-    setGeneratedPhoto(null);
-  }
+  const closeMobileMenu = () => setMobileMenuOpen(false)
 
   return (
-    <header className="h-16 border-b border-border bg-background">
-      <div className="container mx-auto flex h-full items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2">
+    <header className="sticky top-0 z-50 h-14 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 sm:h-16">
+      <div className="container mx-auto flex h-full items-center justify-between px-4 sm:px-6">
+        <Link
+          href="/"
+          className="flex min-w-0 items-center gap-2"
+          onClick={closeMobileMenu}
+        >
           <Sparkles className="size-5 shrink-0" aria-hidden />
-          <span className="text-sm font-bold tracking-tight">Linkfotos AI</span>
+          <span className="truncate text-sm font-bold tracking-tight sm:text-base">
+            Linkfotos AI
+          </span>
         </Link>
 
-        <nav className="flex items-center gap-8">
+        {/* Navegação desktop: oculta abaixo de md (768px) */}
+        <nav
+          className="hidden items-center gap-6 md:flex lg:gap-8"
+          aria-label="Navegação principal"
+        >
           {navLinks.map(({ label, href }) => (
             <Link
               key={href}
@@ -46,7 +44,46 @@ export function Header() {
             </Link>
           ))}
         </nav>
+
+        {/* Botão hambúrguer: visível apenas no mobile */}
+        <button
+          type="button"
+          className="flex size-10 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-muted md:hidden"
+          onClick={() => setMobileMenuOpen((open) => !open)}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-nav"
+          aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+        >
+          {mobileMenuOpen ? (
+            <X className="size-5" aria-hidden />
+          ) : (
+            <Menu className="size-5" aria-hidden />
+          )}
+        </button>
       </div>
+
+      {/* Painel do menu mobile: empilha os links abaixo do header */}
+      {mobileMenuOpen && (
+        <nav
+          id="mobile-nav"
+          className="border-t border-border bg-background px-4 py-3 md:hidden"
+          aria-label="Navegação mobile"
+        >
+          <ul className="flex flex-col gap-1">
+            {navLinks.map(({ label, href }) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className="block rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                  onClick={closeMobileMenu}
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
     </header>
   )
 }
